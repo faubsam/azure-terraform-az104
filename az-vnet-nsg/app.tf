@@ -8,7 +8,7 @@ resource "azurerm_subnet" "app-subnet" {
 
 #Create the nsg for app subnet
 resource "azurerm_network_security_group" "app-nsg" {
-  name = "${azurerm_subnet.app-app.name}-nsg"
+  name = "${azurerm_subnet.app-subnet.name}-nsg"
   resource_group_name = azurerm_resource_group.rg1.name
   location = azurerm_resource_group.rg1.location
 }
@@ -29,7 +29,7 @@ locals {
         "100" : "80"
         "110" : "443"
         "120" : "8080"
-        "13 0" : "22"
+        "130" : "22"
     }
     
 }
