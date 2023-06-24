@@ -1,3 +1,16 @@
+locals {
+  webvm-custom-data = <<CUSTOM_DATA
+sudo dnf install -y httpd
+sudo systemctl enable httpd
+sudo systemctl start httpd
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+sudo chmod -R 777 /var/www/html
+echo "Red Hat Enterprise Linux VM ---- hostname: $(hostname)"
+sudo mkdir /var/www/html/app1
+  CUSTOM_DATA
+}
+
 resource "azurerm_linux_virtual_machine" "web-linux-vm" {
   name = "${local.resource-name-prefix}-web-linux-vm"
   resource_group_name = azurerm_resource_group.rg1.name
@@ -20,4 +33,5 @@ resource "azurerm_linux_virtual_machine" "web-linux-vm" {
     sku = "83-gen2"
     version = "latest"
   }
+  custom_data = filebase64("${path.module}/app-scripts/rhel-webvm.sh")
 }
